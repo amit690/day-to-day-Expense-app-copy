@@ -30,7 +30,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
 
     // If the form is valid, send a POST request with Axios
     if (formValid) {
-        axios.post('/signup', {
+        axios.post('http://localhost:3000/user/signup', {
             name: nameField.value,
             email: emailField.value,
             password: passwordField.value
@@ -39,8 +39,9 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
             console.log('Success:', response.data);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error:', error.response ? error.response.data : error.message);
         });
+        
     }
 });
 
