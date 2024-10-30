@@ -25,3 +25,29 @@ exports.createUser = async (req, res) => {
         res.status(500).json({ message: "An error occurred while creating the user" });
     }
 };
+
+
+exports.loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Find user by email
+        const user = await User.findOne({ where: { email } });
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email' });
+        }
+
+        // Check if the password matches
+        if (user.password !== password) {
+            return res.status(401).json({ error: 'Invalid password' });
+        }
+
+        // If both email and password are correct
+        res.status(200).json({ message: 'Login successful', userId: user.id });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'An error occurred. Please try again later.' });
+    }
+};
