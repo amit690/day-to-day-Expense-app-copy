@@ -1,4 +1,6 @@
-const User = require('../models/user'); // Import the User mode
+const bcrypt = require('bcrypt'); // Import bcrypt
+const User = require('../models/user'); // Import the User model
+
 // Controller function to handle user signup
 exports.createUser = async (req, res) => {
     try {
@@ -15,8 +17,11 @@ exports.createUser = async (req, res) => {
             return res.status(400).json({ message: "Email is already in use" });
         }
 
-        // Create and save the new user
-        const user = await User.create({ name, email, password });
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create and save the new user with the hashed password
+        const user = await User.create({ name, email, password: hashedPassword });
         
         // Respond with a success message and the created user data (excluding the password for security)
         res.status(201).json({ message: "User created successfully", user: { id: user.id, name: user.name, email: user.email } });
@@ -26,7 +31,7 @@ exports.createUser = async (req, res) => {
     }
 };
 
-
+// Controller function to handle user login
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -40,7 +45,8 @@ exports.loginUser = async (req, res) => {
         }
 
         // Check if the password matches
-        if (user.password !== password) {
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid password' });
         }
 
