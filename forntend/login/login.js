@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             console.log('Login successful:', response.data);
             alert('login successfull');
             // Redirect to another page upon successful login
-            // window.location.href = '/home';
+            window.location.href = 'http://127.0.0.1:5500/forntend/daily%20expenceapp%20feature/expense.html';
         })
         .catch(error => {
             console.error('Login failed:', error);
@@ -33,5 +33,5 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
 // Redirect to signup page
 document.getElementById('signupButton').addEventListener('click', () => {
-    window.location.href = 'http://127.0.0.1:5500/forntend/SignUp.html';
+    window.location.href = 'http://127.0.0.1:5500/forntend/Singup/SignUp.html';
 });
