@@ -7,27 +7,18 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.style.display = 'none';
 
-    // Send login request to backend
     axios.post('http://localhost:3000/user/login', { email, password })
         .then(response => {
-            console.log('Login successful:', response.data);
-            alert('login successfull');
-            // Redirect to another page upon successful login
+            const token = response.data.token;
+            localStorage.setItem('token', token); // Save token in localStorage
+
+            alert('Login successful');
             window.location.href = 'http://127.0.0.1:5500/forntend/daily%20expenceapp%20feature/expense.html';
         })
         .catch(error => {
             console.error('Login failed:', error);
-
-            if (error.response && error.response.status === 401) {
-                if (error.response.data.error === 'Invalid email') {
-                    errorMessage.textContent = 'Incorrect email. Please try again.';
-                } else if (error.response.data.error === 'Invalid password') {
-                    errorMessage.textContent = 'Incorrect password. Please try again.';
-                } else {
-                    errorMessage.textContent = 'Login failed. Please check your credentials.';
-                }
-                errorMessage.style.display = 'block';
-            }
+            errorMessage.textContent = error.response?.data?.error || 'Login failed. Please try again.';
+            errorMessage.style.display = 'block';
         });
 });
 

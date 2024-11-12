@@ -1,9 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const sequelize = require('./util/database'); // Your Sequelize instance
+const sequelize = require('./util/database'); 
+const expense = require('./models/expense');
+const user = require('./models/user');
 const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expenseRoutes');
+const { FORCE } = require('sequelize/lib/index-hints');
+
+expense.belongsTo(user);
+user.hasMany(expense);
 
 const app = express();
 

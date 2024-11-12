@@ -1,13 +1,10 @@
-// routes/expenseRoutes.js
 const express = require('express');
-const expenseController = require('../controlers/expenseController');
+const expenseController = require('../controllers/expenseController');
+const authenticate = require('../middleware/authenticate');
 
 const router = express.Router();
 
-// Route to add an expense
-router.post('/add-expense', expenseController.addExpense);
-
-// Route to get all expenses
-router.get('/get-expenses', expenseController.getExpenses);
+router.post('/add-expense', authenticate, expenseController.addExpense);
+router.get('/get-expenses', authenticate, expenseController.getExpenses);
 
 module.exports = router;

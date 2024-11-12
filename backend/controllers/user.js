@@ -1,5 +1,7 @@
-const bcrypt = require('bcrypt'); // Import bcrypt
-const User = require('../models/user'); // Import the User model
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+
 
 // Controller function to handle user signup
 exports.createUser = async (req, res) => {
@@ -36,24 +38,24 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Find user by email
         const user = await User.findOne({ where: { email } });
 
-        // Check if the user exists
         if (!user) {
             return res.status(401).json({ error: 'Invalid email' });
         }
 
-        // Check if the password matches
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid password' });
         }
 
-        // If both email and password are correct
-        res.status(200).json({ message: 'Login successful', userId: user.id });
+        // Generate JWT token
+        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'An error occurred. Please try again later.' });
     }
 };
+

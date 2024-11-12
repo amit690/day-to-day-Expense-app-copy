@@ -1,23 +1,29 @@
-// Event listener for the form submission
 document.getElementById('add-expense-form').addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please log in first.');
+        window.location.href = 'login.html';
+        return;
+    }
 
     const expenseAmount = document.getElementById('amount').value;
     const description = document.getElementById('description').value;
     const category = document.getElementById('category').value;
 
     try {
-        // Send the expense data to the backend
         const response = await axios.post('http://localhost:3000/expense/add-expense', {
             amount: expenseAmount,
             description: description,
             category: category
+        }, {
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.status === 201) {
-            // Successfully added, so clear form and reload expenses
             document.getElementById('add-expense-form').reset();
-            loadExpenses(); // Reload the list of expenses
+            loadExpenses();
         } else {
             console.error('Failed to add expense:', response.data.message);
         }
@@ -26,16 +32,23 @@ document.getElementById('add-expense-form').addEventListener('submit', async (ev
     }
 });
 
-// Function to load expenses from the backend and display them
 async function loadExpenses() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please log in first.');
+        window.location.href = 'login.html';
+        return;
+    }
+
     try {
-        const response = await axios.get('http://localhost:3000/expense/get-expenses');
+        const response = await axios.get('http://localhost:3000/expense/get-expenses', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
         const expenses = response.data;
-
         const expenseList = document.getElementById('expense-list');
-        expenseList.innerHTML = ''; // Clear the list
+        expenseList.innerHTML = '';
 
-        // Display each expense item
         expenses.forEach(expense => {
             const listItem = document.createElement('li');
             listItem.textContent = `${expense.category}: $${expense.amount} - ${expense.description}`;
@@ -46,5 +59,4 @@ async function loadExpenses() {
     }
 }
 
-// Load expenses on page load
 document.addEventListener('DOMContentLoaded', loadExpenses);
