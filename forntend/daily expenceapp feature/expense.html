@@ -4,11 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense app</title>
+    <title>Expense App</title>
     <link rel="stylesheet" href="expennse.css">
 </head>
 
 <body>
+    <!-- Buy Premium Button -->
+    <p id="premium-status"></p>
+    <button id="buy-premium-btn">Buy Premium</button>
+
 
     <!-- Daily Expenses Form -->
     <div id="expense-form">
@@ -25,19 +29,20 @@
                 <option value="Food">Food</option>
                 <option value="Petrol">Petrol</option>
                 <option value="Salary">Salary</option>
-                <!-- Add more categories as needed -->
             </select>
 
             <button type="submit">Add Expense</button>
         </form>
 
-        <!-- Display the list of expenses -->
         <h3>Expense List</h3>
         <ul id="expense-list">
             <!-- Expenses will be dynamically added here -->
         </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="expense.js"></script>
 
 </body>

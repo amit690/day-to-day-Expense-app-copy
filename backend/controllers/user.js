@@ -59,3 +59,17 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+
+exports.status = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.userId);
+        if (!user) {
+            return res.status(404).json({ isPremium: false });
+        }
+        res.status(200).json({ isPremium: user.premium });
+    } catch (error) {
+        console.error('Error checking premium status:', error);
+        res.status(500).json({ isPremium: false });
+    }
+};
+

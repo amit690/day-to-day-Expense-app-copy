@@ -26,7 +26,11 @@ const User = sequelize.define('user', {
         validate: {
             len: [6, 100] // Ensures password length is at least 6 characters
         }
-    }
+    },
+    premium: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+    }    
 });
 
 module.exports = User;

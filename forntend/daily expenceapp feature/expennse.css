@@ -64,3 +64,23 @@
 #expense-list li:last-child {
     border-bottom: none;
 }
+
+/*buy button */
+
+#buy-premium-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#buy-premium-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
